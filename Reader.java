@@ -3,11 +3,13 @@ package com.biblioteca.victor;
 import java.util.ArrayList;
 
 public class Reader {
+	public int id;
 	public String name;
 	public String cpf;
 	public ArrayList<Book> books;
 	
-	public Reader(String name, String cpf) {
+	public Reader(int id,String name, String cpf) {
+		this.id = id;
 		this.name = name;
 		this.cpf = cpf;
 		ArrayList<Book> books = new ArrayList<Book>();

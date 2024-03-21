@@ -29,13 +29,16 @@ public class Main {
 				library.registerReader();
 				break;
 			case 2:
-				library.addBooks();
+				library.addBook();
 				break;
 			case 3:
+				library.removeBook();
 				break;
 			case 4:
+				library.addBook();
 				break;
 			case 5:
+				library.listAllReaders();
 				break;
 			case 6:
 				break;
