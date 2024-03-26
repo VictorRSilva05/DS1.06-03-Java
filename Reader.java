@@ -6,7 +6,7 @@ public class Reader {
 	public int id;
 	public String name;
 	public String cpf;
-	public ArrayList<Book> books;
+	public ArrayList<Book> books = new ArrayList<Book>();
 	
 	public Reader(int id,String name, String cpf) {
 		this.id = id;

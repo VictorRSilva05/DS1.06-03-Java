@@ -1,7 +1,5 @@
 package com.biblioteca.victor;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -28,23 +26,26 @@ public class Library {
 		int id = scanner.nextInt();
 
 		Reader reader = readers.stream().filter(e -> e.id == id).findFirst().get();
-		System.out.print("Enter the id of the book: ");
-		int bookId = scanner.nextInt();
-		System.out.print("Enter the title of the book: ");
-		String title = scanner.next();
-		System.out.print("Enter the subtitle: ");
-		String subtitle = scanner.next();
-		System.out.print("Enter the author: ");
-		String author = scanner.next();
-		System.out.print("Enter the release date: ");
-		String auxReleaseDate = scanner.next();
+		if (reader == null) {
+			System.out.println("Reader could not be found!");
+		} else {
+			System.out.print("Enter the id of the book: ");
+			int bookId = scanner.nextInt();
+			scanner.nextLine();
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-		LocalDate releaseDate = LocalDate.parse(auxReleaseDate, formatter);
+			System.out.print("Enter the title of the book: ");
+			String title = scanner.nextLine();
 
-		Book book = new Book(bookId, title, subtitle, author, releaseDate);
+			System.out.print("Enter the subtitle: ");
+			String subtitle = scanner.nextLine();
 
-		reader.addBooks(book);
+			System.out.print("Enter the author: ");
+			String author = scanner.nextLine();
+
+			Book book = new Book(bookId, title, subtitle, author);
+
+			reader.addBooks(book);
+		}
 	}
 
 	public void removeBook() { // 3#
@@ -53,12 +54,19 @@ public class Library {
 		int id = scanner.nextInt();
 
 		Reader reader = readers.stream().filter(e -> e.id == id).findFirst().get();
+		if (reader == null) {
+			System.out.println("Reader could not be found!");
+		} else {
+			System.out.print("Enter the id of the book: ");
+			int bookId = scanner.nextInt();
 
-		System.out.print("Enter the id of the book: ");
-		int bookId = scanner.nextInt();
-
-		Book book = reader.books.stream().filter((e -> e.id == bookId)).findFirst().get();
-		reader.books.remove(book);
+			Book book = reader.books.stream().filter((e -> e.id == bookId)).findFirst().get();
+			if (book == null) {
+				System.out.println("Book could not be found");
+			} else {
+				reader.books.remove(book);
+			}
+		}
 	}
 
 	public void donateBook() { // 4#
@@ -67,41 +75,62 @@ public class Library {
 		int donorId = scanner.nextInt();
 
 		Reader donor = readers.stream().filter(e -> e.id == donorId).findFirst().get();
+		if (donor == null) {
+			System.out.println("Reader could not be found!");
+		} else {
 
-		System.out.print("Enter the id of the book: ");
-		int bookId = scanner.nextInt();
+			System.out.print("Enter the id of the book: ");
+			int bookId = scanner.nextInt();
 
-		Book book = donor.books.stream().filter((e -> e.id == bookId)).findFirst().get();
+			Book book = donor.books.stream().filter((e -> e.id == bookId)).findFirst().get();
+			if (book == null) {
+				System.out.println("Book could not be found");
+			} else {
+				System.out.print("Enter the id of the receiver: ");
+				int receiverId = scanner.nextInt();
 
-		System.out.print("Enter the id of the receiver: ");
-		int receiverId = scanner.nextInt();
-
-		Reader receiver = readers.stream().filter(e -> e.id == receiverId).findFirst().get();
-
-		donor.books.remove(book);
-		receiver.books.add(book);
+				Reader receiver = readers.stream().filter(e -> e.id == receiverId).findFirst().get();
+				if (receiver == null) {
+					System.out.println("Reader could not be found!");
+				} else {
+					donor.books.remove(book);
+					receiver.books.add(book);
+				}
+			}
+		}
 	}
 
 	public void listAllReaders() {
 		System.out.println();
-		for (Reader reader : readers) {
-			System.out.println("ID: " + reader.id + " Name: " + reader.name + " CPF: " + reader.cpf);
-			for (Book book : reader.books) {
-				System.out.println("\tBook ID: " + book.id + " Title" + book.title + ", " + book.subtitle + " Release date: " + book.releaseDate);
+		if (readers.isEmpty()) {
+			System.out.println("There are no registered readers!");
+		} else {
+			for (Reader reader : readers) {
+				System.out.println("ID: " + reader.id + " Name: " + reader.name + " CPF: " + reader.cpf);
+				for (Book book : reader.books) {
+					System.out.println("\tBook ID: " + book.id + " Title" + book.title + ", " + book.subtitle);
+				}
 			}
 		}
 	}
-	
+
 	public void listSpecificReader() {
 		System.out.println();
 		System.out.print("Enter the id of the reader: ");
 		int id = scanner.nextInt();
 
 		Reader reader = readers.stream().filter(e -> e.id == id).findFirst().get();
-		
-		System.out.println("ID: " + reader.id + " Name: " + reader.name + " CPF: " + reader.cpf);
-		for (Book book : reader.books) {
-			System.out.println("\tBook ID: " + book.id + " Title" + book.title + ", " + book.subtitle + " Release date: " + book.releaseDate);
+		if (reader == null) {
+			System.out.println("Reader could not be found!");
+		} else {
+			if (reader.books.isEmpty()) {
+				System.out.println("The reader has no books in his collection!");
+			} else {
+				System.out.println("ID: " + reader.id + " Name: " + reader.name + " CPF: " + reader.cpf);
+				for (Book book : reader.books) {
+					System.out.println("\tBook ID: " + book.id + " Title" + book.title + ", " + book.subtitle);
+				}
+			}
 		}
 	}
 }
